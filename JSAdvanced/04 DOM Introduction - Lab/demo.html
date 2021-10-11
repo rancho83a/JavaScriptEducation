@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo!</title>
+</head>
+<body>
+    <h1 id="title">Hello DOM</h1>
+    <ul>
+        <li>DOm ,,,,,,,1</li>
+        <li class="demo">DOm ..............2</li>
+        <li class="demo">DOm ..............3</li>
+        <li class="demo">DOm ..............4</li>
+    
+    </ul>
+
+    <script>
+        function arrs(){
+            const htmlCollection = document.getElementsByTagName('li');
+            for(let item of htmlCollection){
+                console.log(item);
+
+            }
+        //    [...htmlCollection].forEach(element => {
+            Array.from(htmlCollection).forEach(element => {
+                console.log(element);
+            });
+        }
+    </script>
+    <button onclick = "console.log('print on console')">Click me</button>
+    <button onclick = "alert('message')">Alert!</button>
+    <script>
+        function sum(a,b){
+         return a+b;
+        }
+        console.log(sum(5,4));
+    </script>
+
+    <input id="username-input" name="username" type="text">
+    <input type="submit" name="user">
+    <script>
+        function start(){
+            let userNameinput = document.getElementById('username-input');
+            console.log(userNameinput.value);
+        }
+    </script>
+
+      <script>
+        function startTag(){
+            let userNameinput = document.getElementsByTagName('li');
+            return (userNameinput);
+        }
+    </script>
+
+    
+<script>
+    function startClass(){
+        let userNameinput = document.getElementsByClassName('demo');
+        return (userNameinput);
+    }
+</script>
+
+</body>
+</html>
