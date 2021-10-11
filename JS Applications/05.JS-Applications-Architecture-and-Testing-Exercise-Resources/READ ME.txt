@@ -1,0 +1,11 @@
+const debug = false;  - turn OFF  slowMo effect 
+const debug = true;   - turn ON  slowMo effect 
+
+
+Ако тестовете не се рънват, проверете дали index.html e зареден на "http://localhost:3000/"
+ако е стартиран на друг адрес, моля копирайте го и го поставете на ред 6 във файла с тестовете вместо текущия:
+const endpoint = "http://localhost:3000/";
+Сървъра дали върви, защото данните не се МОКВАТ, а се взимат от учебния сървър!
+
+
+
