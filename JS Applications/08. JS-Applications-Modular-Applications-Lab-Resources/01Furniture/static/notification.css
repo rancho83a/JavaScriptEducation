@@ -1,0 +1,11 @@
+#notification {
+    display:inline-block;
+    width: 300px;
+    background-color: brown;
+    padding: 16px 32px;
+    color: rgb(247, 244, 245);
+    position:fixed; /*poverh*/ 
+    top: 100px;
+    right:60px;
+    cursor:pointer;
+}

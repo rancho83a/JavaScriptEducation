@@ -1,0 +1,146 @@
+npm init -y
+npm install --save lit-html page
+start node server.js
+npx lite-server
+Configure routing with placeholders modules - по 1 файл(otdelen module) за всяко view  + routing (s console.log)
+implement requests API
+implements view
+
+PYNKT 5:
+1. create folder views and api inside src(yje est app,js vnytri)
+2. create js files for every view: dashboard.js/catalog.js, login.js, register.js, create.js, edit.js, details.js, myFurnitures.js
+3.  
+ import page from '../node_modules/page/page.mjs';
+import { createPage } from './views/create.js'
+import { dashboardPage } from './views/dashboard.js'
+import { detailsPage } from './views/details.js'
+import { editPage } from './views/edit.js';
+import { loginPage } from './views/login.js';
+import { myPage } from './views/my-furniture.js';
+import { registerPage } from './views/register.js';
+
+//import * as api from './api/data.js';
+//window.api=api;
+
+page('/', dashboardPage);
+page('/create', createPage);
+page('/login', loginPage);
+page('/register', registerPage);
+page('/details/:id', detailsPage);
+page('/edit/:id', editPage);
+page('/my-furniture', myPage);
+
+page.start();
+
+ 4. create.js: 
+  4.1 export async function createPage(ctx){  // 
+    console.log('create Page');
+    }
+    export async function editPage(ctx){  //dlq details toje s id
+    console.log('edit Page', ctx.params.id);
+    }
+  4.2app.js:
+     import {createPage} from './views/create.js' +  page('/create', createPage);  
+
+     ,(kogato routing zaseche pat, tou shte izpalni function i shte i dade 
+     parametr context = ctx, kouto pazi all info za sastoyanieto na app ot point of view ROUTER: adresa, kouto usera e posetil, parametrs(id, queryString), 
+     reference kam samiya ROUTER, koeto pozvolyava da polzvame redirect)
+
+5. create folder Sample -> kidaem vse html tyda
+6. v korne sozdaem index.html - add src="/src/app.js" type="module"; - COPY from home/catalog html to index.html (in root) - esli takogo net 
+
+7. api, data  i soedinit m/dy sobou. -> ready files
+
+END of prepare part - kopirovat papky src i po neu sdelat vse popravki: dlq data.js -> host, nazvanie html files, ybrat "." pered "./styles.ccs"
+
+
+8 Implements view 
+
+app.js:
+const main = document.querySelector('.container')
+function renderMiddleWare(ctx, next){
+    ctx.render = (content) => render(content, main);
+    next();//
+}
+
+change in:
+export async function dashboardPage(ctx) {
+    //если сервер медленний -то можно     ctx.render(<p>Loading...) || lit-html have specific function - next lecture;
+    // console.log('dashboard Page');
+    // console.log(ctx);
+    const list = await getAllItems();
+    //console.log(list);
+    ctx.render(dashboardTemplate(list));
+}
+
+8.1 - static template - 
+dashboard: 
+
+import { getAllItems } from "../api/data.js"
+
+function createTemplateItem(item) {
+    return html`...   
+                <div>
+                    <!-- через рутер при нажатии на кнопку перейдем в детали (раньше делали через ид и евентЛистенер и делегирование-->
+                    <a href=${`/details/${item._id}`} class="btn btn-info">Details</a>
+                </div>
+                ....
+    `;
+}
+
+podgryjaem osnovnou
+const dashboardTemplate = (list) => html`
+....
+    ${list.map(createTemplateItem)};
+....
+`;
+
+9
+NAVIGATION
+index.html: 
+menyam linki na "/section" according app.js nazvaniyam
+na logOut => nado event listener, t.k. eto ne page, a action   - NO POTOM
+
+10. LOGIN AND Register
+realizirana logika onsubmit na formy + podsvechivaet (add class) esli ne proshlo validaciya + vmesto ALERT -> vivodit html -msg(podaet parametr errMSG)
+
+11. SETUP NAVIGATION - add to all pages if node_modules
+
+12. Details:
+ btn DEL is action =>                       <a @click = ${ondelete} href="javascript:void(0)" class="btn btn-red">Delete</a>
+ btn EDIT - >                     <a href=${'/edit/${item._id}'} class="btn btn-info">Edit</a>
+
+Logic isVisible or not?
+
+${isOwner ? html`
+                <div>
+                    <a href=${'/edit/${item._id}'} class="btn btn-info">Edit</a>
+            <a href='/edit/${item._id}' class="btn btn-info">Edit</a>
+                </div>` : ''}
+
+
+
+export async function detailsPage(ctx) {
+    //  console.log('details Page', ctx.params.id);
+    const id = ctx.params.id
+    const item = await getItemById(id);
+    ctx.render(detailsTemplate(item, ondelete, sessionStorage.getItem('userId') == item._ownerId));
+
+
+    async function ondelete() {
+        const confirmed = confirm("Are you sure to delete item?");
+        if (confirmed) {
+            await deleteItem(id);
+            ctx.page.redirect('/');
+        }
+    }
+}
+
+13. EDIT: 
+.value - kogda zapolnyqem formy is polychennogo po id Itema
+
+
+
+
+
+

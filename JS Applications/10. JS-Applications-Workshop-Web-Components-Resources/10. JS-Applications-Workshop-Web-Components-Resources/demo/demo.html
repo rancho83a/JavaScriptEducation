@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Components Demo</title>
+</head>
+
+<body>
+
+    <template id="my-template">
+        <style>
+            h1 {
+                color: red;
+            }
+        </style>
+
+        <article>
+            <h1>
+                <slot name="title">TITLE</slot>
+            </h1>
+            <p>
+                <slot>MY DESC</slot>
+            </p>
+        </article>
+
+    </template>
+
+
+    <main id="content">
+        <card-element color="blue">
+            <span slot="title">First Last</span>
+            <ul>
+                <li>One</li>
+                <li>Two</li>
+                <li>Three</li>
+            </ul>
+
+        </card-element>
+
+        <card-element color="red"></card-element>
+        <card-element color="green"></card-element>
+        <card-element id="myElement" visible></card-element>
+    </main>
+    <button id="actionBtn">Click me</button>
+
+    <script type="module">
+        class cardElement extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({ mode: 'open' });
+            }
+
+
+
+            connectedCallback() {
+                const color = this.getAttribute('color');
+
+                const tmp = document.getElementById('my-template');
+                const content = tmp.content.cloneNode(true)
+                content.querySelector('h1').style.color = color;
+                this.shadowRoot.appendChild(content);
+            }
+
+            static get observedAttributes() {
+                return (['visible']);
+            }
+
+            attributeChangedCallback(name, old, value) {
+                console.log('name=',name, 'old=',old, 'val=',value);
+                if (value == null) {
+                    this.style.display = 'none';
+                } else {
+                    this.style.display = 'block';
+                }
+
+            }
+        }
+
+        window.customElements.define('card-element', cardElement);
+        document.getElementById('myElement').addEventListener('click', (e) => {
+            console.log('changed')
+            e.currentTarget.removeAttribute('visible');
+        })
+
+
+        const main = document.getElementById('content');
+        document.getElementById('actionBtn').addEventListener('click', () => {
+            const myElement = document.createElement('card-element');
+
+            main.append(myElement);
+
+            myElement.addEventListener('click', (ev) => {
+                ev.currentTarget.remove();
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

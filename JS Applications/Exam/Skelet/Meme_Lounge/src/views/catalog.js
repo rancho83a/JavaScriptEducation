@@ -1,0 +1,39 @@
+import { html } from "../../node_modules/lit-html/lit-html.js"
+import { getAllItems } from "../api/data.js"
+
+
+
+const createItemExmp = (item)=>
+     html`<div class="meme">
+    <div class="card">
+        <div class="info">
+            <p class="meme-title">${item.title}</p>
+            <img class="meme-image" alt="meme-img" src=${item.imageUrl}>
+        </div>
+        <div id="data-buttons">
+            <a class="button" href="/details/${item._id}">Details</a>
+        </div>
+    </div>
+</div>
+`;
+
+const createItem = (item)=>
+     html`
+
+`;
+const catalogTemplate = (list) => html`
+
+
+`;
+
+//  ${list.length>0 ? list.map(createItem) : html`<p class="no-memes">No memes in database.</p>`}
+
+export async function catalogPage(ctx) {
+    //ctx.setColorActiveBtn('catalogLink');
+
+    //если сервер медленний -то можно     ctx.render(<p>Loading...) || lit-html have specific function - next lecture;
+    //console.log('dashboard Page');
+    const list = await getAllItems();
+    //console.log(list);
+    ctx.render(catalogTemplate(list));
+}
