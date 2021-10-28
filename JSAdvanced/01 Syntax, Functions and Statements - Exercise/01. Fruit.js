@@ -4,4 +4,4 @@ function solve(fruit, grams, pricePerKg){
     console.log(`I need $${money.toFixed(2)} to buy ${kg.toFixed(2)} kilograms ${fruit}.`)
 }
 
-solve('orange', 2500, 1.80);
+solve('orange', 2500, 1);
